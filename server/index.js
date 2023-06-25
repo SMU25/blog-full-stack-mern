@@ -1,7 +1,8 @@
-import express, { json } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
 import cors from "cors";
+import dotenv from "dotenv";
 import {
   loginValidation,
   registerValidation,
@@ -15,10 +16,11 @@ import {
 import { storage } from "./storage.js";
 import { checkAuth, handleValidationErrors } from "./utils/index.js";
 
-const LOCALHOST_SERVER_PORT = process.env.LOCALHOST_SERVER_PORT || 7777;
+dotenv.config();
 
-const MONGODB_URI =
-  "mongodb+srv://mern-blog:TM7MyDmjGxpJUA9y@mern-blog.rsnlfsk.mongodb.net/blog?retryWrites=true&w=majority";
+const PORT_LOCALHOST = process.env.PORT_LOCALHOST || 7777;
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose
   .connect(MONGODB_URI)
@@ -90,13 +92,13 @@ app.post(
 );
 
 // для старту сервера
-app.listen(LOCALHOST_SERVER_PORT, (error) => {
+app.listen(PORT_LOCALHOST, (error) => {
   if (error) {
     console.log(error);
   } else {
     console.log(
       `Server started! 
-URL Adress: http://localhost:${LOCALHOST_SERVER_PORT}/`
+URL Adress: http://localhost:${PORT_LOCALHOST}/`
     );
   }
 });

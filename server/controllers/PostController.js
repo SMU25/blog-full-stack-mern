@@ -133,9 +133,7 @@ export const getTags = async (req, res) => {
     const tags = posts
       .map(({ tags }) => tags)
       .flat()
-
-      // потім змінити
-      .slice(0, req.query.limit || 5);
+      .slice(0, req.query.limit);
 
     res.json(tags);
   } catch (error) {
