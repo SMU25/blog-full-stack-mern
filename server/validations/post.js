@@ -8,9 +8,3 @@ export const postCreateValidation = [
     .isArray(),
   body("imageUrl", "Невірне посилання на зображення").optional().isString(),
 ];
-
-// export const createCommentPostValidation = [
-//   body("id", "Введіть заголовок посту").isString(),
-//   body("text", "Введіть текст коментаря").isLength({ min: 3 }).isString(),
-//   body("user", "Передайте дані автора коментаря").isObject(),
-// ];

@@ -1,13 +1,14 @@
 import PostModel from "../models/Post.js";
 
-// додати отримання постів за ід юзера та поточного юзера + додавання та отримання коментарів
-// додати отримання коментарів поточного користувача , видалення поста ,якщо він є його автором
+// видалення поста ,якщо він є його автором
 // різні папки створювати для різних типів файлів
 // не вертати пароль нікуди
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await PostModel.find().populate("user").exec();
+    const posts = await PostModel.find()
+      .populate("user", "-passwordHash")
+      .exec();
 
     res.json(posts);
   } catch (error) {
@@ -31,6 +32,7 @@ export const getById = async (req, res) => {
         returnDocument: "after",
       }
     )
+      .populate("user", "-passwordHash")
       .then((doc) => {
         if (!doc) {
           return res.status(404).json({
@@ -58,8 +60,8 @@ export const create = async (req, res) => {
   try {
     const { body, userId } = req;
     const doc = new PostModel({
-      ...body,
       user: userId,
+      ...body,
     });
 
     const post = await doc.save();
@@ -143,13 +145,3 @@ export const getTags = async (req, res) => {
     });
   }
 };
-
-// export const createCommentPost = async (req, res) => {
-//   try {
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       message: "Не вдалося створити пост",
-//     });
-//   }
-// };
