@@ -46,11 +46,11 @@ export const create = async (req, res) => {
 
     const comment = await doc.save();
 
-    const newComment = await CommentModel.find({ _id: comment._id })
+    const fullComment = await CommentModel.find({ _id: comment._id })
       .populate("user", "-passwordHash")
       .exec();
 
-    res.json(newComment);
+    res.json(fullComment);
   } catch (error) {
     console.log(error);
     res.status(500).json({
