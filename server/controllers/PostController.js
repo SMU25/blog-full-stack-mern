@@ -1,13 +1,18 @@
 import PostModel from "../models/Post.js";
+import { getInitialSortOrder } from "../utils/index.js";
 
 // видалення поста ,якщо він є його автором
 // різні папки створювати для різних типів файлів
-// не вертати пароль нікуди
 
 export const getAll = async (req, res) => {
   try {
+    const { limit, order } = req.query;
+    const sortOrder = getInitialSortOrder(order);
+
     const posts = await PostModel.find()
       .populate("user", "-passwordHash")
+      .sort(sortOrder)
+      .limit(limit)
       .exec();
 
     res.json(posts);
@@ -130,12 +135,15 @@ export const remove = async (req, res) => {
 
 export const getTags = async (req, res) => {
   try {
-    const posts = await PostModel.find().exec();
+    const { limit, order } = req.query;
+    const sortOrder = getInitialSortOrder(order);
+
+    const posts = await PostModel.find().sort(sortOrder).exec();
 
     const tags = posts
       .map(({ tags }) => tags)
       .flat()
-      .slice(0, req.query.limit);
+      .slice(0, limit);
 
     res.json(tags);
   } catch (error) {
