@@ -7,10 +7,12 @@ import {
   loginValidation,
   registerValidation,
   postCreateValidation,
+  commentCreateValidation,
 } from "./validations/index.js";
 import {
   UserController,
   PostController,
+  CommentController,
   FilesController,
 } from "./controllers/index.js";
 import { storage } from "./storage.js";
@@ -63,8 +65,6 @@ app.get("/posts/tags", PostController.getTags);
 
 app.get("/posts/:id", PostController.getById);
 
-// app.get("/posts/:id/comments", PostController.getCommentsByIdPost);
-
 app.post(
   "/posts",
   checkAuth,
@@ -82,6 +82,19 @@ app.patch(
 );
 
 app.delete("/posts/:id", checkAuth, PostController.remove);
+
+// Comments
+app.get("/comments", CommentController.getAll);
+
+app.get("/posts/:id/comments", CommentController.getByPostId);
+
+app.post(
+  "/posts/:id/comments",
+  checkAuth,
+  commentCreateValidation,
+  handleValidationErrors,
+  CommentController.create
+);
 
 // Upload files
 app.post(
