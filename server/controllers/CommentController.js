@@ -62,7 +62,9 @@ export const create = async (req, res) => {
       .populate("user", "-passwordHash")
       .then((doc) => {
         if (!doc) {
-          return res.json({ message: "Не вдалося повернути доданий коментар" });
+          return res
+            .status(500)
+            .json({ message: "Не вдалося повернути доданий коментар" });
         }
 
         res.json(doc);
