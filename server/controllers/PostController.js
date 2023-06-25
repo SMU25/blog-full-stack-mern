@@ -60,8 +60,8 @@ export const create = async (req, res) => {
   try {
     const { body, userId } = req;
     const doc = new PostModel({
-      ...body,
       user: userId,
+      ...body,
     });
 
     const post = await doc.save();
