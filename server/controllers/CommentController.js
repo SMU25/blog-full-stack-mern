@@ -47,7 +47,7 @@ export const create = async (req, res) => {
     const doc = new CommentModel({
       post: postId,
       user: userId,
-      ...body,
+      text: body.text,
     });
 
     const comment = await doc.save();
