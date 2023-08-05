@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import multer from "multer";
 import cors from "cors";
 import chalk from "chalk";
-import { dotenvConfig } from "./dotenv.js";
+import "dotenv/config";
 import { storage } from "./storage.js";
 import {
   loginValidation,
