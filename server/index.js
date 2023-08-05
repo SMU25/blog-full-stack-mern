@@ -2,7 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
 import cors from "cors";
-import dotenv from "dotenv";
+import chalk from "chalk";
+import "dotenv/config";
+import { storage } from "./storage.js";
 import {
   loginValidation,
   registerValidation,
@@ -15,10 +17,7 @@ import {
   CommentController,
   FilesController,
 } from "./controllers/index.js";
-import { storage } from "./storage.js";
 import { checkAuth, handleValidationErrors } from "./utils/index.js";
-
-dotenv.config();
 
 const PORT_LOCALHOST = process.env.PORT_LOCALHOST || 7777;
 
@@ -26,8 +25,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose
   .connect(MONGODB_URI)
-  .then(() => console.log("Database Connected"))
-  .catch((error) => console.log("Database Error", error));
+  .then(() => console.log(chalk.green("Database Connected")))
+  .catch((error) => console.log(chalk.red("Database Error\n", error)));
 
 const app = express();
 
@@ -38,7 +37,7 @@ app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
-  res.send("Сервер запущений");
+  res.send("Server started!");
 });
 
 // Authorization and User
@@ -107,11 +106,9 @@ app.post(
 // для старту сервера
 app.listen(PORT_LOCALHOST, (error) => {
   if (error) {
-    console.log(error);
+    console.log("Server Error", chalk.red(error));
   } else {
-    console.log(
-      `Server started! 
-URL Adress: http://localhost:${PORT_LOCALHOST}/`
-    );
+    console.log(chalk.green("\nServer started on localhost port:"));
+    console.log(chalk.cyanBright(`http://localhost:${PORT_LOCALHOST}/`));
   }
 });
